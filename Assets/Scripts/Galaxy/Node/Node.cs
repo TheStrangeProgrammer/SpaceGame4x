@@ -4,10 +4,10 @@ using UnityEngine;
 public class Node
 {
     public int id;
-    public CartezianPosition position = new CartezianPosition(0,0);
+    public CartezianPosition position;
     public string name;
     public string texturePath = "";
-    public List<Node> links = new List<Node>();
+    public List<Starlane> starlanes = new List<Starlane>();
 
     public Node(int id,string name, CartezianPosition position)
     {
