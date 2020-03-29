@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour
         zoomedInAngle = -45;
         zoomedOutAngle = 0;
         minZoom = 20;
-        maxZoom = DisplayGalaxy.displayGalaxy.galaxy.maximumRadius*2;
+        maxZoom = 400;
     }
     // Update is called once per frame
     void Update()
