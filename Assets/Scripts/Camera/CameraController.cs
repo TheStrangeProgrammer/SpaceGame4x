@@ -30,8 +30,8 @@ public class CameraController : MonoBehaviour
     {
         zoomedInAngle = -45;
         zoomedOutAngle = 0;
-        minZoom = 20;
-        maxZoom = 400;
+        minZoom = 5;
+        maxZoom = 200;
     }
     // Update is called once per frame
     void Update()
