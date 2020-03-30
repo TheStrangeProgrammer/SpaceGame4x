@@ -109,7 +109,7 @@ public class GalaxyController
         if (graph.VertexCount == 0)
         {
             CartezianPosition nodePosition = GenerateRandomPosition();
-            graph.AddVertex(CreateNode(0, nodePosition));
+            graph.AddVertex(CreateNode(0, "Star0", nodePosition));
 
         }
         if (galaxy.numberOfArms == 0)
@@ -130,7 +130,7 @@ public class GalaxyController
                     }
                 }
                 if (canBeAdded)
-                    graph.AddVertex(CreateNode(i,nodePosition));
+                    graph.AddVertex(CreateNode(i,"Star"+i,nodePosition));
                 if (impossibleProbability == galaxy.numberOfNodes * 2)
                 {
                     impossible = true;
@@ -139,9 +139,9 @@ public class GalaxyController
 
         }
     }
-    Node CreateNode(int id, CartezianPosition nodePosition)
+    Node CreateNode(int id,string nodeName, CartezianPosition nodePosition)
     {
-        Node newNode = new Node(id,  nodePosition);
+        Node newNode = new Node(id, nodeName, nodePosition);
         newNode.GeneratePlanets();
         return newNode;
     }

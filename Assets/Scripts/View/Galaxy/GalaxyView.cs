@@ -15,6 +15,7 @@ public class GalaxyView : MonoBehaviour
     public GalaxyController galaxy;
     public Dictionary<GameObject, Node> displayedNodes;
     public Dictionary<GameObject, Starlane> displayedStarlanes;
+    public List<TextMesh> namePlates;
     private void Awake()
     {
         galaxyPlaceholder = this.transform;
@@ -34,7 +35,17 @@ public class GalaxyView : MonoBehaviour
         foreach (Node node in galaxy.graph.Vertices)
         {
             GameObject newDisplayedNode = Instantiate(nodePrefab, new Vector3(node.position.x, node.position.y), new Quaternion(), galaxyPlaceholder);
-            
+            TextMesh nameText = new GameObject(node.nodeName + " Name Plate").AddComponent<TextMesh>();
+            nameText.transform.SetParent(newDisplayedNode.transform);
+            nameText.text = node.nodeName;
+            nameText.transform.localPosition = new Vector3(0, -1.2f, 0);
+            nameText.anchor = TextAnchor.MiddleCenter;
+            nameText.alignment = TextAlignment.Center;
+            nameText.color = Color.white;
+            nameText.fontSize = 10;
+            nameText.gameObject.isStatic = true;
+            nameText.transform.Rotate(new Vector3(0, 0, 1f), CameraController.currentAngle.z);
+            namePlates.Add(nameText);
             newDisplayedNode.GetComponent<Renderer>().material.mainTexture = TextureUtility.LoadUserPNG(Path.Combine(TextureUtility.userNodesTexturePath,node.texturePath));
             displayedNodes.Add(newDisplayedNode, node);
         }
@@ -60,16 +71,20 @@ public class GalaxyView : MonoBehaviour
 
     void Update()
     {
-        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit = new RaycastHit();
-
-        if (Physics.Raycast(mouseRay, out hit))
+        if (namePlates.Count > 0)
         {
-            //hit.transform.gameObject.GetComponent<Renderer>().material.color = new Color(0,0,255);
-        }
-        else
-        {
-
+            if (CameraController.cameraController.zoomLevel < 0.4)
+            {
+                for (int i = 0; i < namePlates.Count; i++)
+                {
+                    namePlates[i].transform.LookAt(Camera.main.transform);
+                    float rotY = namePlates[i].transform.localEulerAngles.y + 180f;
+                    namePlates[i].transform.localEulerAngles = new Vector3(
+                        -namePlates[i].transform.localEulerAngles.x,
+                            rotY,
+                        -namePlates[i].transform.localEulerAngles.z);
+                }
+            }
         }
     }
 }

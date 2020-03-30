@@ -13,10 +13,11 @@ public class Node{
     {
         id = -1;
     }
-    public Node(int id, CartezianPosition position)
+    public Node(int id,string nodeName, CartezianPosition position)
     {
         this.id = id;
         this.position = position;
+        this.nodeName = nodeName;
     }
 
     
