@@ -47,4 +47,20 @@ public class XMLUtility : MonoBehaviour
         reader.Close();
         return deserializedObject;
     }
+    public static List<objectType> LoadAllInternalXMLInFolder<objectType>(string path)
+    {
+        Debug.Log(path);
+        TextAsset[] xmlFiles = Resources.LoadAll<TextAsset>(path);
+        Debug.Log(xmlFiles.Length);
+       List <objectType> deserializedObjects = new List<objectType>();
+        foreach (TextAsset xmlFile in xmlFiles)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(objectType));
+            StringReader reader = new StringReader(xmlFile.ToString());
+            deserializedObjects.Add((objectType)serializer.Deserialize(reader));
+            reader.Close();
+        }
+        
+        return deserializedObjects;
+    }
 }

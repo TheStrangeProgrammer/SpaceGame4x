@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<GalaxyType xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <id>0</id>
+  <typeName>Round Galaxy</typeName>
+  <texturePath>galaxy.png</texturePath>
+  <seed>1234</seed>
+  <numberOfNodes>400</numberOfNodes>
+  <minimumRadius>0</minimumRadius>
+  <maximumRadius>100</maximumRadius>
+  <minDistanceBetweenNodes>5</minDistanceBetweenNodes>
+  <hasArms>false</hasArms>
+  <numberOfArms>0</numberOfArms>
+  <hasCenter>false</hasCenter>
+  <percentageStarsCentre>25</percentageStarsCentre>
+  <nodeTypePercentages>
+    <nodeTypePercentage>
+      <key>0</key>
+      <value>100</value>
+    </nodeTypePercentage>
+  </nodeTypePercentages>
+  <possibleNames>
+    <possibleName>galaxyName1</possibleName>
+    <possibleName>galaxyName2</possibleName>
+    <possibleName>galaxyName3</possibleName>
+  </possibleNames>
+  <minAngleBetweenConnections>25</minAngleBetweenConnections>
+  <maxDistanceBetweenNodesToConnect>40</maxDistanceBetweenNodesToConnect>
+  <maxConnectionsPerNode>5</maxConnectionsPerNode>
+</GalaxyType>

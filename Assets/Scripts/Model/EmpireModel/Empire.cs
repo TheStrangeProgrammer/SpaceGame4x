@@ -15,9 +15,9 @@ public class Empire
     public string description;
     [XmlArray("populationTypes")]
     [XmlArrayItem("populationType")]
-    public List<Population> population;
+    public List<int> populationTypes;
     [XmlElement]
-    public Government government;
+    public int government;
     public Empire()
     {
         id = 0;

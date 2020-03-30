@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet
+public class EmpireController
 {
-    int id;
-
-    PlanetType planetType;
+    List<Empire> empires;
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<NodeType xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <id>0</id>
+  <typeName>Round Galaxy</typeName>
+  <texturePath>node.png</texturePath>
+  <minPlanetAmount>1</minPlanetAmount>
+  <maxPlanetAmount>7</maxPlanetAmount>
+  <possibleNames>
+    <possibleName>nodeName1</possibleName>
+    <possibleName>nodeName2</possibleName>
+    <possibleName>nodeName3</possibleName>
+  </possibleNames>
+  <planetTypePercentages>
+    <planetTypePercentage>
+      <key>0</key>
+      <value>100</value>
+    </planetTypePercentage>
+  </planetTypePercentages>
+</NodeType>

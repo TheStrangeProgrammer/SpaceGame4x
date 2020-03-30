@@ -16,8 +16,9 @@ public class TextureUtility : MonoBehaviour
     }
     public static Texture2D LoadInternalPNG(string path)
     {
-        Texture2D loadedTexture = Resources.Load<Texture2D>(path);
-
+        Debug.Log(path);
+        Texture2D loadedTexture = new Texture2D(2, 2); 
+        loadedTexture= Resources.Load<Texture2D>(path); 
         return loadedTexture;
     }
 }

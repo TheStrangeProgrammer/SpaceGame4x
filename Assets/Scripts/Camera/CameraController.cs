@@ -101,7 +101,7 @@ public class CameraController : MonoBehaviour
             mainCamera.transform.localPosition = new Vector3(mainCamera.transform.localPosition.x, mainCamera.transform.localPosition.y, Mathf.SmoothDamp(mainCamera.transform.localPosition.z,targetZoom,ref currentZoomVelocity,smoothZoomTime));
 
 
-        mainCamera.transform.localRotation = Quaternion.Euler(
+            mainCamera.transform.localRotation = Quaternion.Euler(
                 Mathf.SmoothDampAngle(mainCamera.transform.localRotation.eulerAngles.x,targetZoomAngle, ref currentZoomAngleVelocity, smoothZoomAngleTime),
                 mainCamera.transform.localRotation.eulerAngles.y,
                 mainCamera.transform.localRotation.eulerAngles.z
@@ -118,7 +118,7 @@ public class CameraController : MonoBehaviour
             //transform.RotateAround(transform.position, Vector3.up, pos.x);
             //Debug.Log(gameObject.transform.eulerAngles.z.ToString()+targetZoomAngle.ToString());
         }
-            gameObject.transform.localRotation = Quaternion.Euler(
+        gameObject.transform.localRotation = Quaternion.Euler(
             gameObject.transform.eulerAngles.x,
             gameObject.transform.eulerAngles.y,
             Mathf.SmoothDampAngle(gameObject.transform.eulerAngles.z,  targetRotation, ref currentRotationVelocity, smoothRotationTime));

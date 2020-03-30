@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class StaticData : MonoBehaviour
 {
-    public static string userPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "SpaceGame4x/");
+    public static string userPath = Path.Combine(Application.persistentDataPath, "SpaceGame4x/");
     public static UnityEngine.Object LoadUnityResource(string path)
     {
         return Resources.Load(path);

@@ -18,13 +18,14 @@ public class GalaxyView : MonoBehaviour
     public List<TextMesh> namePlates;
     private void Awake()
     {
+        displayGalaxy = this;
         galaxyPlaceholder = this.transform;
         displayedNodes = new Dictionary<GameObject, Node>();
         displayedStarlanes = new Dictionary<GameObject, Starlane>();
         galaxy = new GalaxyController();
-        galaxy.LoadXML();
-        galaxy.Generate();
-        displayGalaxy = this;
+        //galaxy.LoadXML();
+        //galaxy.Generate();
+        //displayGalaxy = this;
 
     }
     // Start is called before the first frame update
@@ -38,7 +39,7 @@ public class GalaxyView : MonoBehaviour
             TextMesh nameText = new GameObject(node.nodeName + " Name Plate").AddComponent<TextMesh>();
             nameText.transform.SetParent(newDisplayedNode.transform);
             nameText.text = node.nodeName;
-            nameText.transform.localPosition = new Vector3(0, -1.2f, 0);
+            nameText.transform.localPosition = new Vector3(0, 0, 10.2f);
             nameText.anchor = TextAnchor.MiddleCenter;
             nameText.alignment = TextAlignment.Center;
             nameText.color = Color.white;
@@ -46,7 +47,7 @@ public class GalaxyView : MonoBehaviour
             nameText.gameObject.isStatic = true;
             nameText.transform.Rotate(new Vector3(0, 0, 1f), CameraController.currentAngle.z);
             namePlates.Add(nameText);
-            newDisplayedNode.GetComponent<Renderer>().material.mainTexture = TextureUtility.LoadUserPNG(Path.Combine(TextureUtility.userNodesTexturePath,node.texturePath));
+            newDisplayedNode.GetComponent<Renderer>().material.mainTexture = TextureUtility.LoadInternalPNG("Textures/Node/"+node.nodeType.texturePath);
             displayedNodes.Add(newDisplayedNode, node);
         }
 
@@ -56,7 +57,7 @@ public class GalaxyView : MonoBehaviour
             Vector3 endPosition = new Vector3(starlane.Target.position.x, starlane.Target.position.y);
             Vector3 startPosition = new Vector3(starlane.Source.position.x, starlane.Source.position.y);
             newDisplayedStarlane.transform.position = (endPosition - startPosition) / 2.0f + startPosition;
-            newDisplayedStarlane.GetComponent<Renderer>().material.mainTexture = TextureUtility.LoadUserPNG(Path.Combine(TextureUtility.userStarlanesTexturePath, starlane.texturePath));
+            newDisplayedStarlane.GetComponent<Renderer>().material.mainTexture = TextureUtility.LoadInternalPNG("Textures/Starlane/" + starlane.starlaneType.texturePath);
             Vector3 v3T = transform.localScale;      // Scale it
             v3T.x = 0.1f;
             v3T.z = 0.1f;
@@ -77,12 +78,14 @@ public class GalaxyView : MonoBehaviour
             {
                 for (int i = 0; i < namePlates.Count; i++)
                 {
-                    namePlates[i].transform.LookAt(Camera.main.transform);
-                    float rotY = namePlates[i].transform.localEulerAngles.y + 180f;
-                    namePlates[i].transform.localEulerAngles = new Vector3(
-                        -namePlates[i].transform.localEulerAngles.x,
-                            rotY,
-                        -namePlates[i].transform.localEulerAngles.z);
+                    namePlates[i].transform.rotation = Camera.main.transform.rotation;
+                    Vector3 objectNormal = namePlates[i].transform.rotation * Vector3.forward;
+                    Vector3 cameraToText = namePlates[i].transform.position - Camera.main.transform.position;
+                    float f = Vector3.Dot(objectNormal, cameraToText);
+                    if (f < 0f)
+                    {
+                        namePlates[i].transform.Rotate(0f, 180f, 0f);
+                    }
                 }
             }
         }

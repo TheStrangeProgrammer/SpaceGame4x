@@ -1,29 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using QuikGraph;
 using QuikGraph.Algorithms;
-public class Node{
+using System;
+public class Node
+{
     public int id;
     public CartezianPosition position;
     public string nodeName;
-    public string texturePath = "node.png";
-    //public List<Starlane> starlanes = new List<Starlane>();
+    public NodeType nodeType;
+    public int planetAmount;
     public Node()
     {
         id = -1;
     }
-    public Node(int id,string nodeName, CartezianPosition position)
+    public Node(CartezianPosition position)
+    {
+         this.position = position;
+    }
+    public void SetupNode(int id, NodeType nodeType)
     {
         this.id = id;
-        this.position = position;
-        this.nodeName = nodeName;
-    }
-
-    
-
-    public void GeneratePlanets()
-    {
-
+        this.nodeType = nodeType;
+        nodeName = nodeType.possibleNames[RandomUtility.random.Next(0, nodeType.possibleNames.Count)];
+        planetAmount = RandomUtility.random.Next(nodeType.minPlanetAmount, nodeType.maxPlanetAmount);
     }
 }

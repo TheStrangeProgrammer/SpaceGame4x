@@ -13,42 +13,50 @@ using System;
 public class GalaxyController
 {
     public static GalaxyController galaxyController;
-    private Galaxy galaxy;
+    public Galaxy galaxy;
+    
+    private Dictionary<int,GalaxyType> galaxyTypes;
     [XmlIgnore]
     private Dictionary<Starlane, int> edgeCosts = new Dictionary<Starlane, int>();
     [XmlIgnore]
     public UndirectedGraph<Node, Starlane> graph;
-    Random random;
     public GalaxyController()
     {
 
-        graph = new UndirectedGraph<Node, Starlane>(false, (edge, source, target) => { return edge.Source == target && edge.Target == source; });
-        
         galaxyController = this;
-        galaxy = new Galaxy();
-        galaxy.nodeTypes = new List<Node>();
+        galaxyTypes = new Dictionary<int, GalaxyType>();
+        LoadXML();
+        galaxy=new Galaxy(galaxyTypes[0]);
+        Generate();
+        new NodeController();
+        //graph = new UndirectedGraph<Node, Starlane>(false, (edge, source, target) => { return edge.Source == target && edge.Target == source; });
+
+        //galaxyController = this;
+        //galaxy = new Galaxy();
+        //galaxy.galaxyType.nodeTypes = new List<int>();
         //Galaxy.SaveXML(galaxy);
         //galaxy.nodeTypes = new List<Node>();
     }
     public void LoadXML()
     {
-        galaxy = Galaxy.LoadXML("galaxy.xml");
+        foreach (GalaxyType galaxyType in XMLUtility.LoadAllInternalXMLInFolder<GalaxyType>("XML/Types/GalaxyTypes"))
+        {
+            galaxyTypes.Add(galaxyType.id, galaxyType);
+        }
     }
-    public string getnodenr()
-    {
-        return galaxy.numberOfNodes.ToString();
-    }
+
     public void Generate()
     {
-        if (!galaxy.hasCenter)
+        graph = new UndirectedGraph<Node, Starlane>(false, (edge, source, target) => { return edge.Source == target && edge.Target == source; });
+        if (!galaxy.galaxyType.hasCenter)
         {
-            galaxy.hasArms = false;
+            galaxy.galaxyType.hasArms = false;
         }
-        if (galaxy.hasCenter)
+        if (galaxy.galaxyType.hasCenter)
         {
-            galaxy.minimumRadius = 0;
+            galaxy.galaxyType.minimumRadius = 0;
         }
-        random = new Random();
+        RandomUtility.random = new Random();
         
         GenerateNodes();
         GenerateLanes();
@@ -57,12 +65,12 @@ public class GalaxyController
     int RandomNumber(int min, int max)
     {
 
-        return random.Next(min, max);
+        return RandomUtility.random.Next(min, max);
     }
     double RandomDouble()
     {
 
-        return random.NextDouble();
+        return RandomUtility.random.NextDouble();
     }
     void printpath()
     {
@@ -72,10 +80,10 @@ public class GalaxyController
     {
         CartezianPosition positionToReturn = null;
 
-        double angle = random.NextDouble() * 2 * Math.PI;
-        double randomTheta = Math.Sqrt(random.NextDouble());
-        double radiusMax = (galaxy.maximumRadius - galaxy.minimumRadius) * randomTheta;
-        double radiusMin = galaxy.minimumRadius;
+        double angle = RandomUtility.random.NextDouble() * 2 * Math.PI;
+        double randomTheta = Math.Sqrt(RandomUtility.random.NextDouble());
+        double radiusMax = (galaxy.galaxyType.maximumRadius - galaxy.galaxyType.minimumRadius) * randomTheta;
+        double radiusMin = galaxy.galaxyType.minimumRadius;
         double x = radiusMax * Math.Cos(angle) + radiusMin * Math.Cos(angle);
         double y = radiusMax * Math.Sin(angle) + radiusMin * Math.Sin(angle);
         positionToReturn = new CartezianPosition(Convert.ToInt32(x), Convert.ToInt32(y));
@@ -99,7 +107,7 @@ public class GalaxyController
         }
         else
         {
-            return new CartezianPosition(RandomNumber(-galaxy.maximumRadius, galaxy.maximumRadius), RandomNumber(-galaxy.maximumRadius, galaxy.maximumRadius));
+            return new CartezianPosition(RandomNumber(-galaxy.galaxyType.maximumRadius, galaxy.galaxyType.maximumRadius), RandomNumber(-galaxy.galaxyType.maximumRadius, galaxy.galaxyType.maximumRadius));
         }
     }
     void GenerateNodes()
@@ -109,19 +117,19 @@ public class GalaxyController
         if (graph.VertexCount == 0)
         {
             CartezianPosition nodePosition = GenerateRandomPosition();
-            graph.AddVertex(CreateNode(0, "Star0", nodePosition));
+            graph.AddVertex(new Node(nodePosition));
 
         }
-        if (galaxy.numberOfArms == 0)
+        if (galaxy.galaxyType.numberOfArms == 0)
         {
-            for (int i = 1; i < galaxy.numberOfNodes && !impossible; i++)
+            for (int i = 1; i < galaxy.galaxyType.numberOfNodes && !impossible; i++)
             {
 
                 CartezianPosition nodePosition = GenerateRandomPosition();
                 bool canBeAdded = true;
                 for (int j = 0; j < graph.VertexCount; j++)
                 {
-                    if (CartezianPosition.IsDistanceLessThan(graph.Vertices.ElementAt(j).position, nodePosition, galaxy.minDistanceBetweenNodes))
+                    if (CartezianPosition.IsDistanceLessThan(graph.Vertices.ElementAt(j).position, nodePosition, galaxy.galaxyType.minDistanceBetweenNodes))
                     {
                         i--;
                         impossibleProbability++;
@@ -130,8 +138,8 @@ public class GalaxyController
                     }
                 }
                 if (canBeAdded)
-                    graph.AddVertex(CreateNode(i,"Star"+i,nodePosition));
-                if (impossibleProbability == galaxy.numberOfNodes * 2)
+                    graph.AddVertex(new Node(nodePosition));
+                if (impossibleProbability == galaxy.galaxyType.numberOfNodes * 2)
                 {
                     impossible = true;
                 }
@@ -139,12 +147,7 @@ public class GalaxyController
 
         }
     }
-    Node CreateNode(int id,string nodeName, CartezianPosition nodePosition)
-    {
-        Node newNode = new Node(id, nodeName, nodePosition);
-        newNode.GeneratePlanets();
-        return newNode;
-    }
+
     void GenerateLanes()
     {
 
@@ -154,7 +157,7 @@ public class GalaxyController
             IEnumerator<Node> enumeratorNodes = orderedNodes.GetEnumerator();
             enumeratorNodes.MoveNext();
             enumeratorNodes.MoveNext();
-            if (CartezianPosition.CalculateDistance(enumeratorNodes.Current.position, node.position) > galaxy.maxDistanceBetweenNodesToConnect)
+            if (CartezianPosition.CalculateDistance(enumeratorNodes.Current.position, node.position) > galaxy.galaxyType.maxDistanceBetweenNodesToConnect)
             {
                 Node reference = enumeratorNodes.Current;
                 Starlane newEdge = new Starlane(node, reference);
@@ -169,7 +172,7 @@ public class GalaxyController
             {
                 for (int j = 1; j < 6; j++)
                 {
-                    if (graph.AdjacentEdges(node).Count() < galaxy.maxConnectionsPerNode && graph.AdjacentEdges(enumeratorNodes.Current).Count() < galaxy.maxConnectionsPerNode)
+                    if (graph.AdjacentEdges(node).Count() < galaxy.galaxyType.maxConnectionsPerNode && graph.AdjacentEdges(enumeratorNodes.Current).Count() < galaxy.galaxyType.maxConnectionsPerNode)
                     {
                         bool foundIntersection = false;
 
