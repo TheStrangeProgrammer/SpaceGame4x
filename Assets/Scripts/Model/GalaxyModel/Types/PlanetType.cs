@@ -6,14 +6,44 @@ using System.Xml.Serialization;
 public class PlanetType
 {
     [XmlElement]
-    int id;
-
+    public int id;
+    [XmlElement]
+    public string description;
     [XmlElement]
     public string texturePath = "planet.png";
 
-    [XmlArray("possibleNames")]
-    [XmlArrayItem("possibleName")]
-    public List<string> possibleNames;
+
+    [XmlElement]
+    public int minFood;
+    [XmlElement]
+    public int maxFood;
+    [XmlElement]
+    public int minResearch;
+    [XmlElement]
+    public int maxResearch;
+    [XmlElement]
+    public int minIndustry;
+    [XmlElement]
+    public int maxIndustry;
+    [XmlElement]
+    public int minMoney;
+    [XmlElement]
+    public int maxMoney;
+    [XmlElement]
+    public int fertilityType;
+    [XmlElement]
+    public int atmosphereType;
+    [XmlElement]
+    public int climateType;
+
+
+    //[XmlArray("orbitPositionsPercentages")]
+    //[XmlArrayItem("orbitPositionsPercentage")]
+    //public Dictionary<int, int> orbitPositionsPercentages;
+
+    //[XmlArray("specialResourceTypePercentages")]
+   // [XmlArrayItem("specialResourceTypePercentage")]
+    //public Dictionary<int, int> specialResourceTypePercentages;
     public PlanetType()
     {
         id = -1;

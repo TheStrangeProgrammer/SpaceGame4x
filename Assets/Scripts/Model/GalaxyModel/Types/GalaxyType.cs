@@ -6,45 +6,42 @@ using System.Xml.Serialization;
 public class GalaxyType
 {
     [XmlElement]
-    public int id;
-    [XmlElement]
     public string typeName;
     [XmlElement]
-    public string texturePath = "galaxy.png";
+    public string texturePath;
+    
     [XmlElement]
-    public int seed;
-    [XmlElement("numberOfNodes")]
-    public int numberOfNodes = 400;
+    public int numberOfNodes;
 
-    [XmlElement("minimumRadius")]
-    public int minimumRadius = 0;
-    [XmlElement("maximumRadius")]
-    public int maximumRadius = 100;
-    [XmlElement("minDistanceBetweenNodes")]
-    public int minDistanceBetweenNodes = 5;
+    [XmlElement]
+    public int minimumRadius;
+    [XmlElement]
+    public int maximumRadius;
+    [XmlElement]
+    public int minDistanceBetweenNodes;
 
 
-    [XmlElement("hasArms")]
-    public bool hasArms = false;
-    [XmlElement("numberOfArms")]
-    public int numberOfArms = 0;
+    [XmlElement]
+    public bool hasArms;
+    [XmlElement]
+    public int numberOfArms;
 
-    [XmlElement("hasCenter")]
-    public bool hasCenter = false;
-    [XmlElement("percentageStarsCentre")]
-    public int percentageStarsCentre = 25;
+    [XmlElement]
+    public bool hasCenter;
+    [XmlElement]
+    public int percentageStarsCentre;
 
     
-    [XmlElement("minAngleBetweenConnections")]
-    public float minAngleBetweenConnections = 25f;
-    [XmlElement("maxDistanceBetweenNodesToConnect")]
-    public int maxDistanceBetweenNodesToConnect = 40;
-    [XmlElement("maxConnectionsPerNode")]
-    public int maxConnectionsPerNode = 5;
+    [XmlElement]
+    public float minAngleBetweenConnections;
+    [XmlElement]
+    public int maxDistanceBetweenNodesToConnect;
+    [XmlElement]
+    public int maxConnectionsPerNode;
 
     [XmlArray("nodeTypePercentages")]
     [XmlArrayItem("nodeTypePercentage")]
-    public List<Pair<int, int>> nodeTypePercentages;
+    public List<Pair<string, int>> nodeTypePercentages;
 
     [XmlArray("possibleNames")]
     [XmlArrayItem("possibleName")]

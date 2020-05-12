@@ -29,7 +29,7 @@ public class GalaxyView : MonoBehaviour
 
     }
     // Start is called before the first frame update
-    void Start()
+    void Display()
     {
         Debug.Log(galaxy.graph.VertexCount);
         Debug.Log(galaxy.graph.EdgeCount);
@@ -61,7 +61,7 @@ public class GalaxyView : MonoBehaviour
             Vector3 v3T = transform.localScale;      // Scale it
             v3T.x = 0.1f;
             v3T.z = 0.1f;
-            v3T.y = (endPosition - startPosition).magnitude / 2;
+            v3T.y = (endPosition - startPosition).magnitude / 2-0.5f;
             newDisplayedStarlane.transform.localScale = v3T;
 
             // Rotate it

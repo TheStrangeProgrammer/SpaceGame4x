@@ -17,9 +17,10 @@ public class XMLUtility : MonoBehaviour
     public static void SaveUserXML<objectType>(string path, objectType objectToSerialize)
     {
         XmlSerializer serializer = new XmlSerializer(typeof(objectType));
-        Stream stream = new FileStream(Path.Combine(StaticData.userPath, path), FileMode.Create, FileAccess.Write);
-        serializer.Serialize(stream, objectToSerialize);
-        stream.Close();
+        using (Stream stream = new FileStream(Path.Combine(StaticData.userPath, path), FileMode.Create, FileAccess.Write))
+        {
+            serializer.Serialize(stream, objectToSerialize);
+        }
     }
     public static objectType LoadUserXML<objectType>(string path) where objectType : new()
     {
@@ -40,11 +41,13 @@ public class XMLUtility : MonoBehaviour
     }
     public static objectType LoadInternalXML<objectType>(string path)
     {
+        objectType deserializedObject;
         TextAsset xmlFile = Resources.Load<TextAsset>(path);
         XmlSerializer serializer = new XmlSerializer(typeof(objectType));
-        StringReader reader = new StringReader(xmlFile.ToString());
-        objectType deserializedObject = (objectType) serializer.Deserialize(reader);
-        reader.Close();
+        using (StringReader reader = new StringReader(xmlFile.ToString()))
+        {
+            deserializedObject = (objectType)serializer.Deserialize(reader);
+        }
         return deserializedObject;
     }
     public static List<objectType> LoadAllInternalXMLInFolder<objectType>(string path)
@@ -56,9 +59,10 @@ public class XMLUtility : MonoBehaviour
         foreach (TextAsset xmlFile in xmlFiles)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(objectType));
-            StringReader reader = new StringReader(xmlFile.ToString());
-            deserializedObjects.Add((objectType)serializer.Deserialize(reader));
-            reader.Close();
+            using (StringReader reader = new StringReader(xmlFile.ToString()))
+            {
+                deserializedObjects.Add((objectType)serializer.Deserialize(reader));
+            }
         }
         
         return deserializedObjects;

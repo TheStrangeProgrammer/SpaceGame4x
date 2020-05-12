@@ -6,10 +6,12 @@ using System.Xml.Serialization;
 [XmlRoot("StarlaneType")]
 public class StarlaneType {
     [XmlElement]
-    int id;
-
+    public int id;
+    [XmlElement]
+    public string typeName;
     [XmlElement]
     public string texturePath = "starlane.png";
+
     public StarlaneType()
     {
         id = -1;

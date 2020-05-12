@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class NodeController
-{
+{/*
     public static NodeController nodeController;
     private Dictionary<int, NodeType> nodeTypes;
     Dictionary<Node,List<Planet>> planets;
     public NodeController()
     {
         nodeController = this;
+        
         nodeTypes = new Dictionary<int, NodeType>();
         LoadXML();
-        InitializeNodes();
+        SetupNodes();
     }
     public void LoadXML()
     {
@@ -21,7 +22,7 @@ public class NodeController
             nodeTypes.Add(nodeType.id, nodeType);
         }
     }
-    void InitializeNodes()
+    void SetupNodes()
     {
         List<Pair<int, int>> typePercentages = GalaxyController.galaxyController.galaxy.galaxyType.nodeTypePercentages;
         int percentageSum = 0;
@@ -50,5 +51,5 @@ public class NodeController
     public void GeneratePlanets()
     {
         
-    }
+    }*/
 }

@@ -14,21 +14,21 @@ public class GalaxyController
 {
     public static GalaxyController galaxyController;
     public Galaxy galaxy;
-    
-    private Dictionary<int,GalaxyType> galaxyTypes;
+    private Dictionary<string,GalaxyType> galaxyTypes;
     [XmlIgnore]
     private Dictionary<Starlane, int> edgeCosts = new Dictionary<Starlane, int>();
     [XmlIgnore]
     public UndirectedGraph<Node, Starlane> graph;
     public GalaxyController()
     {
-
+        
         galaxyController = this;
-        galaxyTypes = new Dictionary<int, GalaxyType>();
-        LoadXML();
-        galaxy=new Galaxy(galaxyTypes[0]);
+        galaxyTypes = new Dictionary<string, GalaxyType>();
+        LoadInternalXML();
+        //galaxy=new Galaxy(0,galaxyTypes[]);
         Generate();
         new NodeController();
+        new StarlaneController();
         //graph = new UndirectedGraph<Node, Starlane>(false, (edge, source, target) => { return edge.Source == target && edge.Target == source; });
 
         //galaxyController = this;
@@ -37,11 +37,11 @@ public class GalaxyController
         //Galaxy.SaveXML(galaxy);
         //galaxy.nodeTypes = new List<Node>();
     }
-    public void LoadXML()
+    public void LoadInternalXML()
     {
         foreach (GalaxyType galaxyType in XMLUtility.LoadAllInternalXMLInFolder<GalaxyType>("XML/Types/GalaxyTypes"))
         {
-            galaxyTypes.Add(galaxyType.id, galaxyType);
+            galaxyTypes.Add(galaxyType.typeName, galaxyType);
         }
     }
 
